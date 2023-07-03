@@ -2,23 +2,10 @@
 const express = require('express')
 const http = require('http')
 const socketIo = require('socket.io')
-const cors = require('cors')
 const app = express()
 const server = http.createServer(app)
-const path = require('path')
-app.options('*', cors()) // Enable pre-flight for all routes
+const io = socketIo(server)
 
-// Point static path to dist
-app.use(express.static(path.join(__dirname, '../dist')))
-
-const io = socketIo(server, {
-  cors: {
-    origin: '*',
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-})
-app.use(cors())
 const rooms = {} // Room storage
 const roomIntervals = {}
 io.on('connection', (socket) => {

@@ -2,7 +2,7 @@
 let API_URL = ''
 
 if (process.env.NODE_ENV === 'production') {
-  API_URL = 'https://seven-donuts-add.loca.lt'
+  API_URL = 'http://localhost:3000'
 } else {
   API_URL = 'http://localhost:3000'
 }
