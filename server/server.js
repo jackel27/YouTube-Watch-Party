@@ -5,8 +5,11 @@ const socketIo = require('socket.io')
 const cors = require('cors')
 const app = express()
 const server = http.createServer(app)
-
+const path = require('path')
 app.options('*', cors()) // Enable pre-flight for all routes
+
+// Point static path to dist
+app.use(express.static(path.join(__dirname, '../dist')))
 
 const io = socketIo(server, {
   cors: {
