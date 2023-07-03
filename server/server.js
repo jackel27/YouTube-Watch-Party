@@ -6,6 +6,8 @@ const cors = require('cors')
 const app = express()
 const server = http.createServer(app)
 
+app.options('*', cors()) // Enable pre-flight for all routes
+
 const io = socketIo(server, {
   cors: {
     origin: '*',
