@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { API_URL } from '@/config'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios' // You'll need to install axios if you haven't already
@@ -19,14 +20,14 @@ import io from 'socket.io-client'
 export default {
   name: 'HomeView',
   setup () {
-    const socket = io('http://localhost:3000')
+    const socket = io(API_URL)
     const roomId = ref('')
     const router = useRouter()
     const nickname = ref('')
     const joinRoom = async () => {
       if (roomId.value !== '' && nickname.value !== '') {
         try {
-          const response = await axios.get(`http://localhost:3000/rooms/${roomId.value}`) // replace with your server URL
+          const response = await axios.get(`${API_URL}/rooms/${roomId.value}`) // replace with your server URL
           if (response.data.exists) {
             socket.emit('join room', roomId.value, nickname.value) // Pass nickname to server
             router.push({ name: 'RoomView', params: { id: roomId.value, videoId: response.data.videoId, nickname: nickname.value } })

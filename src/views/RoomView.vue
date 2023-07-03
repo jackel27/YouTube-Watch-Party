@@ -22,8 +22,12 @@
       </div>
     </div>
   </div>
+  <div class="notification" v-for="(message, index) in notificationMessage" :key="index">
+    {{ message }}
+  </div>
 </template>
 <script>
+import { API_URL } from '@/config'
 /* global YT */
 import { onMounted, ref, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
@@ -33,7 +37,7 @@ export default {
   name: 'RoomView',
   setup () {
     const users = ref({})
-    const socket = io('http://localhost:3000')
+    const socket = io(API_URL)
     // const socket = io('http://10.0.0.10:3000')
     const player = ref(null)
     const route = useRoute()
@@ -43,6 +47,21 @@ export default {
     // const isSeeking = ref(false)
     const videoTitle = ref('')
     const roomIdCopyMessage = ref('')
+    const notificationMessage = ref([])
+
+    const showNotification = (message) => {
+      console.log('showing notification: ', message)
+      notificationMessage.value.push(message)
+      setTimeout(() => {
+        notificationMessage.value = notificationMessage.value.filter(msg => msg !== message)
+      }, 5000)
+    }
+    socket.on('userJoin', (user) => {
+      if (user.nickname === route.params.nickname || !user.nickname) {
+        return
+      }
+      showNotification(`${user.nickname} joined the room`)
+    })
     // Function to sync the player with server's state and time
     const syncPlayerWithServer = (syncTime, syncState) => {
       if (!isPlayerReady.value) {
@@ -221,12 +240,6 @@ export default {
           }
         }
       })
-
-      // socket.on('connect', () => {
-      //   console.log('user', socket.id, 'connected ', route.params.nickname, socket)
-      //   socket.emit('joinRoom', { room: { id: roomId }, user: { id: socket.id, nickname: route.params.nickname } })
-      // })
-      // Add this function to check if the player is ready before performing an operation
     })
     return {
       player,
@@ -241,6 +254,12 @@ export default {
 </script>
 
 <style scoped>
+.notification {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+}
 .theater-bg {
   background-image: url('https://img.freepik.com/free-vector/theater-cinema-curtains-with-focus-light-vector-illustration_1017-38346.jpg');
   background-size: cover;

@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { API_URL } from '@/config'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { v4 as uuidv4 } from 'uuid'
@@ -17,7 +18,7 @@ import io from 'socket.io-client'
 export default {
   name: 'CreateRoomView',
   setup () {
-    const socket = io('http://localhost:3000')
+    const socket = io(API_URL)
     const router = useRouter()
     const videoUrl = ref('')
     const nickname = ref('')
