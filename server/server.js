@@ -8,8 +8,9 @@ const server = http.createServer(app)
 
 const io = socketIo(server, {
   cors: {
-    origin: 'http://161.35.236.75',
-    methods: ['GET', 'POST']
+    origin: '*',
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 })
 app.use(cors())
