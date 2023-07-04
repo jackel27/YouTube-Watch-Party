@@ -5,7 +5,8 @@ const socketIo = require('socket.io')
 const app = express()
 const server = http.createServer(app)
 const io = socketIo(server)
-
+const cors = require('cors')
+app.use(cors())
 const rooms = {} // Room storage
 const roomIntervals = {}
 io.on('connection', (socket) => {
