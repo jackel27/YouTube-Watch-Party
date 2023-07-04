@@ -6,7 +6,7 @@ const app = express()
 const server = http.createServer(app)
 const io = socketIo(server)
 const cors = require('cors')
-app.use(cors())
+app.use(cors({ origin: 'http://161.35.236.75' }))
 const rooms = {} // Room storage
 const roomIntervals = {}
 io.on('connection', (socket) => {
