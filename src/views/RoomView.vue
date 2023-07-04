@@ -27,7 +27,7 @@
   </div>
 </template>
 <script>
-// import { API_URL } from '@/config'
+import { API_URL } from '@/config'
 /* global YT */
 import { onMounted, ref, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
@@ -37,7 +37,7 @@ export default {
   name: 'RoomView',
   setup () {
     const users = ref({})
-    const socket = io()
+    const socket = io(API_URL)
     // const socket = io('http://10.0.0.10:3000')
     const player = ref(null)
     const route = useRoute()
